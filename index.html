@@ -1,43 +1,107 @@
-
-<style>
-  .calc-wrap { padding: 1.5rem 0; font-family: var(--font-sans); }
-  .header { display: flex; align-items: center; gap: 14px; margin-bottom: 1.75rem; padding-bottom: 1.25rem; border-bottom: 0.5px solid var(--color-border-tertiary); }
-  .logo-mark { width: 44px; height: 44px; border-radius: var(--border-radius-md); background: #cc1433; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .logo-mark svg { width: 28px; height: 28px; }
-  .header-text h1 { font-size: 18px; font-weight: 500; margin: 0; color: var(--color-text-primary); }
-  .header-text p { font-size: 13px; color: var(--color-text-secondary); margin: 4px 0 0; }
-  .section-label { font-size: 12px; font-weight: 500; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 12px; }
-  .user-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 1.5rem; }
-  .user-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.1rem; }
-  .user-card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
-  .user-icon { width: 30px; height: 30px; border-radius: var(--border-radius-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .user-card-title { font-size: 14px; font-weight: 500; color: var(--color-text-primary); }
-  .user-card-desc { font-size: 11.5px; color: var(--color-text-secondary); font-style: italic; line-height: 1.5; margin: 0 0 12px; }
-  .qty-row { display: flex; align-items: center; gap: 8px; }
-  .qty-label { font-size: 12px; color: var(--color-text-secondary); white-space: nowrap; }
-  .qty-input { width: 70px; padding: 6px 8px; font-size: 14px; font-weight: 500; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-primary); text-align: center; }
-  .qty-input:focus { outline: none; border-color: #cc1433; }
-  .qty-input::placeholder { color: var(--color-text-tertiary); font-weight: 400; }
-  .tier-badge { font-size: 10px; padding: 2px 7px; border-radius: 20px; background: #fce8eb; color: #cc1433; font-weight: 500; margin-left: auto; white-space: nowrap; }
-  .results-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-bottom: 1.5rem; }
-  .result-card { background: var(--color-background-secondary); border-radius: var(--border-radius-lg); padding: 1.1rem 1.25rem; }
-  .result-card.accent { background: #cc1433; }
-  .result-label { font-size: 12px; color: var(--color-text-secondary); margin: 0 0 6px; font-weight: 500; }
-  .result-card.accent .result-label { color: rgba(255,255,255,0.75); }
-  .result-range { font-size: 22px; font-weight: 500; color: var(--color-text-primary); margin: 0; }
-  .result-card.accent .result-range { color: #fff; }
-  .result-sub { font-size: 12px; color: var(--color-text-secondary); margin: 4px 0 0; }
-  .result-card.accent .result-sub { color: rgba(255,255,255,0.65); }
-  .breakdown { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; }
-  .breakdown-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 0.5px solid var(--color-border-tertiary); font-size: 13px; }
-  .breakdown-row:last-child { border-bottom: none; }
-  .breakdown-name { color: var(--color-text-secondary); }
-  .breakdown-val { color: var(--color-text-primary); font-weight: 500; }
-  .disclaimer { font-size: 11px; color: var(--color-text-tertiary); font-style: italic; margin: 1rem 0 0; text-align: center; }
-</style>
-
-<div class="calc-wrap">
-  <h2 class="sr-only">COINS Evo pricing calculator — enter user counts to estimate monthly and annual subscription ranges</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COINS Evo — Pricing Estimator</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f4f4f2;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 2rem;
+      width: 100%;
+      max-width: 680px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 1.75rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid #e8e8e6;
+    }
+    .logo-mark {
+      width: 44px; height: 44px;
+      border-radius: 8px;
+      background: #cc1433;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .logo-mark svg { width: 28px; height: 28px; }
+    .header-text h1 { font-size: 18px; font-weight: 500; color: #1a1a1a; }
+    .header-text p { font-size: 13px; color: #888; margin-top: 3px; }
+    .section-label {
+      font-size: 11px; font-weight: 600; color: #999;
+      text-transform: uppercase; letter-spacing: 0.07em; margin: 0 0 12px;
+    }
+    .user-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 12px; margin-bottom: 1.5rem;
+    }
+    @media (max-width: 520px) {
+      .user-grid { grid-template-columns: 1fr; }
+      .results-grid { grid-template-columns: 1fr; }
+    }
+    .user-card {
+      background: #fff; border: 1px solid #e8e8e6;
+      border-radius: 12px; padding: 1rem;
+    }
+    .user-card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .user-icon {
+      width: 30px; height: 30px; border-radius: 8px;
+      background: #fce8eb;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .user-card-title { font-size: 14px; font-weight: 500; color: #1a1a1a; }
+    .user-card-desc { font-size: 11.5px; color: #888; font-style: italic; line-height: 1.5; margin: 0 0 12px; }
+    .qty-row { display: flex; align-items: center; gap: 8px; }
+    .qty-label { font-size: 12px; color: #999; white-space: nowrap; }
+    .qty-input {
+      width: 70px; padding: 6px 8px; font-size: 14px; font-weight: 500;
+      border-radius: 8px; border: 1px solid #ddd; background: #f8f8f7;
+      color: #1a1a1a; text-align: center; outline: none; transition: border-color 0.15s;
+    }
+    .qty-input:focus { border-color: #cc1433; }
+    .qty-input::placeholder { color: #bbb; font-weight: 400; }
+    .tier-badge {
+      font-size: 10px; padding: 2px 7px; border-radius: 20px;
+      background: #fce8eb; color: #cc1433; font-weight: 500;
+      margin-left: auto; white-space: nowrap;
+    }
+    .results-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 1.5rem; }
+    .result-card { background: #f8f8f7; border-radius: 12px; padding: 1.1rem 1.25rem; }
+    .result-card.accent { background: #cc1433; }
+    .result-label { font-size: 12px; color: #888; margin: 0 0 6px; font-weight: 500; }
+    .result-card.accent .result-label { color: rgba(255,255,255,0.75); }
+    .result-range { font-size: 20px; font-weight: 500; color: #1a1a1a; }
+    .result-card.accent .result-range { color: #fff; }
+    .result-sub { font-size: 12px; color: #999; margin-top: 4px; }
+    .result-card.accent .result-sub { color: rgba(255,255,255,0.65); }
+    .breakdown { background: #fff; border: 1px solid #e8e8e6; border-radius: 12px; padding: 1rem 1.25rem; }
+    .breakdown-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 7px 0; border-bottom: 1px solid #f0f0ee; font-size: 13px;
+    }
+    .breakdown-row:last-child { border-bottom: none; }
+    .breakdown-name { color: #888; }
+    .breakdown-val { color: #1a1a1a; font-weight: 500; }
+    .disclaimer { font-size: 11px; color: #bbb; font-style: italic; margin: 1rem 0 0; text-align: center; }
+  </style>
+</head>
+<body>
+<div class="card">
 
   <div class="header">
     <div class="logo-mark">
@@ -56,10 +120,16 @@
 
   <p class="section-label">User counts</p>
   <div class="user-grid">
+
     <div class="user-card">
       <div class="user-card-header">
-        <div class="user-icon" style="background:#fce8eb;">
-          <i class="ti ti-building" style="font-size:16px; color:#cc1433;" aria-hidden="true"></i>
+        <div class="user-icon">
+          <!-- building / office icon -->
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#cc1433" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="1"/>
+            <path d="M3 9h18"/>
+            <path d="M9 21V9"/>
+          </svg>
         </div>
         <span class="user-card-title">Office users</span>
       </div>
@@ -70,10 +140,14 @@
         <span class="tier-badge" id="office-tier">—</span>
       </div>
     </div>
+
     <div class="user-card">
       <div class="user-card-header">
-        <div class="user-icon" style="background:#fce8eb;">
-          <i class="ti ti-tool" style="font-size:16px; color:#cc1433;" aria-hidden="true"></i>
+        <div class="user-icon">
+          <!-- wrench / tool icon -->
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#cc1433" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+          </svg>
         </div>
         <span class="user-card-title">Service techs</span>
       </div>
@@ -84,13 +158,13 @@
         <span class="tier-badge" id="tech-tier">—</span>
       </div>
     </div>
+
     <div class="user-card">
       <div class="user-card-header">
-        <div class="user-icon" style="background:#fce8eb;">
-          <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <!-- dome outline only -->
+        <div class="user-icon">
+          <!-- hard hat outline -->
+          <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M2 13 C2 13 2 5 10 4 C18 3 18 13 18 13" fill="none" stroke="#cc1433" stroke-width="1.75" stroke-linecap="round"/>
-            <!-- brim outline only -->
             <rect x="0.5" y="12.5" width="19" height="2.5" rx="1.25" fill="none" stroke="#cc1433" stroke-width="1.75"/>
           </svg>
         </div>
@@ -103,6 +177,7 @@
         <span class="tier-badge" id="field-tier">—</span>
       </div>
     </div>
+
   </div>
 
   <p class="section-label">Estimated investment</p>
@@ -136,20 +211,15 @@
   </div>
 
   <p class="disclaimer">Pricing ranges are estimates for internal planning purposes only. Final pricing subject to formal quote and contract terms.</p>
-</div>
 
+</div>
 <script>
 function fmt(n) { return '$' + n.toLocaleString('en-US'); }
 function roundDown100(n) { return Math.floor(n / 100) * 100; }
 function roundUp100(n) { return Math.ceil(n / 100) * 100; }
 function roundDown1000(n) { return Math.floor(n / 1000) * 1000; }
 function roundUp1000(n) { return Math.ceil(n / 1000) * 1000; }
-
-function getVal(id) {
-  var v = parseInt(document.getElementById(id).value);
-  return isNaN(v) || v < 0 ? 0 : v;
-}
-
+function getVal(id) { var v = parseInt(document.getElementById(id).value); return isNaN(v) || v < 0 ? 0 : v; }
 function officeRates(qty) {
   if (qty <= 0) return null;
   if (qty <= 40) return { lo: 250, hi: 350, tier: '1–40 users' };
@@ -166,56 +236,32 @@ function fieldRates(qty) {
   if (qty <= 0) return null;
   return { lo: 20, hi: 30, tier: 'Standard' };
 }
-
 function calc() {
-  var office = getVal('office');
-  var tech = getVal('tech');
-  var field = getVal('field');
-
-  var or = officeRates(office);
-  var tr = techRates(tech);
-  var fr = fieldRates(field);
-
+  var office = getVal('office'), tech = getVal('tech'), field = getVal('field');
+  var or = officeRates(office), tr = techRates(tech), fr = fieldRates(field);
   document.getElementById('office-tier').textContent = or ? or.tier : '—';
   document.getElementById('tech-tier').textContent = tr ? tr.tier : '—';
   document.getElementById('field-tier').textContent = fr ? fr.tier : '—';
-
   if (office === 0 && tech === 0 && field === 0) {
-    document.getElementById('monthly-range').textContent = '—';
-    document.getElementById('annual-range').textContent = '—';
+    ['monthly-range','annual-range'].forEach(function(id){ document.getElementById(id).textContent = '—'; });
     document.getElementById('monthly-sub').textContent = 'Enter user counts above';
     document.getElementById('annual-sub').textContent = 'Enter user counts above';
-    document.getElementById('bd-office').textContent = '—';
-    document.getElementById('bd-tech').textContent = '—';
-    document.getElementById('bd-field').textContent = '—';
+    ['bd-office','bd-tech','bd-field'].forEach(function(id){ document.getElementById(id).textContent = '—'; });
     return;
   }
-
-  var offLo = or ? office * or.lo : 0;
-  var offHi = or ? office * or.hi : 0;
-  var techLo = tr ? tech * tr.lo : 0;
-  var techHi = tr ? tech * tr.hi : 0;
-  var fieldLo = fr ? field * fr.lo : 0;
-  var fieldHi = fr ? field * fr.hi : 0;
-
-  var mLo = offLo + techLo + fieldLo;
-  var mHi = offHi + techHi + fieldHi;
-
+  var offLo = or ? office*or.lo : 0, offHi = or ? office*or.hi : 0;
+  var techLo = tr ? tech*tr.lo : 0, techHi = tr ? tech*tr.hi : 0;
+  var fieldLo = fr ? field*fr.lo : 0, fieldHi = fr ? field*fr.hi : 0;
+  var mLo = offLo+techLo+fieldLo, mHi = offHi+techHi+fieldHi;
   document.getElementById('monthly-range').textContent = fmt(roundDown100(mLo)) + ' – ' + fmt(roundUp100(mHi));
-  document.getElementById('annual-range').textContent = fmt(roundDown1000(mLo * 12)) + ' – ' + fmt(roundUp1000(mHi * 12));
+  document.getElementById('annual-range').textContent = fmt(roundDown1000(mLo*12)) + ' – ' + fmt(roundUp1000(mHi*12));
   document.getElementById('monthly-sub').textContent = 'per month';
   document.getElementById('annual-sub').textContent = 'per year';
-
-  document.getElementById('bd-office').textContent = or
-    ? fmt(roundDown100(offLo)) + ' – ' + fmt(roundUp100(offHi)) + '/mo'
-    : 'Not included';
-  document.getElementById('bd-tech').textContent = tr
-    ? fmt(roundDown100(techLo)) + ' – ' + fmt(roundUp100(techHi)) + '/mo'
-    : 'Not included';
-  document.getElementById('bd-field').textContent = fr
-    ? fmt(roundDown100(fieldLo)) + ' – ' + fmt(roundUp100(fieldHi)) + '/mo'
-    : 'Not included';
+  document.getElementById('bd-office').textContent = or ? fmt(roundDown100(offLo))+' – '+fmt(roundUp100(offHi))+'/mo' : 'Not included';
+  document.getElementById('bd-tech').textContent = tr ? fmt(roundDown100(techLo))+' – '+fmt(roundUp100(techHi))+'/mo' : 'Not included';
+  document.getElementById('bd-field').textContent = fr ? fmt(roundDown100(fieldLo))+' – '+fmt(roundUp100(fieldHi))+'/mo' : 'Not included';
 }
-
 calc();
 </script>
+</body>
+</html>
